@@ -1,7 +1,8 @@
 .idea/
 .pub/
-packages/*
+packages/
 .packages
 config.yml
 docker-compose.yml
+.git/
 docker.env

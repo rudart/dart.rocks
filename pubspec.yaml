@@ -1,0 +1,4 @@
+name: "dart_rocks"
+dependencies:
+  redstone: "^0.6.4"
+  yaml: "^2.1.8"

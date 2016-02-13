@@ -3,3 +3,6 @@ dependencies:
   redstone: "^0.6.4"
   yaml: "^2.1.8"
   args: "^0.13.3+3"
+
+dev_dependencies:
+  test: "^0.12.10+2"

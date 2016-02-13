@@ -5,4 +5,4 @@ COPY . /var/www
 RUN cd /var/www && pub get
 
 WORKDIR /var/www
-ENTRYPOINT /var/www/start.sh
+ENTRYPOINT ["/var/www/start.sh"]

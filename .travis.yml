@@ -1,0 +1,12 @@
+sudo: required
+
+language: ruby
+
+services:
+  - docker
+
+before_install:
+  - docker build -t dart_rocks .
+
+script:
+  - docker run --rm dart_rocks pub run test

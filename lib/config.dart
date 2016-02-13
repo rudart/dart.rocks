@@ -6,6 +6,8 @@ class Config {
 
   static Map _config = {};
 
+  static set config(value) => _config = value;
+
   static load(path) {
     File configFile = new File(path);
     String content = configFile.readAsStringSync();
@@ -30,14 +32,18 @@ class Config {
       return null;
     }
 
-    if (data is List && data.length >= int.parse(key)) {
+    if (data is List) {
       key = int.parse(key);
-      if (data.length >= key) {
+      if (data.length <= key) {
         return null;
       }
     }
 
-    var value = data[key];
+    var value = null;
+    if (_isMappable(data) || data is List) {
+      value = data[key];
+    }
+
     if (path.length == 0) {
       return value;
     }

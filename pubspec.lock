@@ -21,6 +21,18 @@ packages:
     description: barback
     source: hosted
     version: "0.15.2+7"
+  browser:
+    description:
+      name: browser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.0+2"
+  bson:
+    description:
+      name: bson
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.23"
   charcode:
     description: charcode
     source: hosted
@@ -49,6 +61,12 @@ packages:
     description: di
     source: hosted
     version: "3.3.7"
+  fixnum:
+    description:
+      name: fixnum
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.2"
   glob:
     description: glob
     source: hosted
@@ -78,9 +96,11 @@ packages:
     source: hosted
     version: "0.9.5+1"
   logging:
-    description: logging
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.2"
+    version: "0.9.3"
   matcher:
     description: matcher
     source: hosted
@@ -93,6 +113,30 @@ packages:
     description: mockable_filesystem
     source: hosted
     version: "0.0.3"
+  mongo_dart:
+    description:
+      name: mongo_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.47"
+  mongo_dart_query:
+    description:
+      name: mongo_dart_query
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.17"
+  more:
+    description:
+      name: more
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.0"
+  objectory:
+    description:
+      name: objectory
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.22"
   package_config:
     description: package_config
     source: hosted
@@ -113,6 +157,12 @@ packages:
     description: pub_semver
     source: hosted
     version: "1.2.3"
+  quiver:
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.19.0+1"
   redstone:
     description: redstone
     source: hosted

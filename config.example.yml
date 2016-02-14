@@ -1,2 +1,10 @@
 server:
   port: <server.port>
+
+db:
+  host: <db.host>
+  port: <db.port>
+  dbName: <db.name>
+  username: <db.username>
+  password: <db.password>
+

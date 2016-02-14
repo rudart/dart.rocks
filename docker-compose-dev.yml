@@ -1,0 +1,26 @@
+mongo:
+  image: mongo
+  ports:
+    - "27017:27017"
+  expose:
+    - 27017
+
+application:
+  build: "."
+  container_name: "dart-rocks-application"
+  environment:
+    - SERVER_PORT=5050
+    - DB_HOST=mongo
+    - DB_PORT=27017
+    - DB_NAME=dr
+
+test:
+  extends:
+    service: application
+  links:
+      - mongo:mongo
+  environment:
+    - DB_NAME=test
+  command: pub run test
+
+

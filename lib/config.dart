@@ -1,6 +1,7 @@
 import "dart:io";
 
 import "package:yaml/yaml.dart";
+import "package:path/path.dart" show dirname, normalize, isAbsolute;
 
 class Config {
 
@@ -8,7 +9,12 @@ class Config {
 
   static set config(value) => _config = value;
 
-  static load(path) {
+  static load([path=null]) {
+    if (path == null) {
+      path = dirname(Platform.script.toFilePath()) + '/../config.yml';
+    }
+
+    path = _getConfigPath(path);
     File configFile = new File(path);
     String content = configFile.readAsStringSync();
 
@@ -53,6 +59,15 @@ class Config {
 
   static bool _isMappable(config) {
     return config is Map || config is YamlMap;
+  }
+
+  static String _getConfigPath(file) {
+    if (isAbsolute(file)) {
+      return file;
+    }
+
+    String path = Directory.current.absolute.path + Platform.pathSeparator + file;
+    return normalize(path);
   }
 
 }

@@ -8,3 +8,5 @@ db:
   username: <db.username>
   password: <db.password>
 
+migrationPath: bin/migrations
+

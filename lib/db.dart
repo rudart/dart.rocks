@@ -4,6 +4,7 @@ import "package:objectory/objectory_console.dart";
 import "config.dart";
 
 part "models/sample.dart";
+part "models/migration.dart";
 
 
 initConnection() async {
@@ -18,6 +19,7 @@ initConnection() async {
 
 _registerModels() {
   objectory.registerClass(Sample, () => new Sample(), () => new List<Sample>());
+  objectory.registerClass(Migration, () => new Migration(), () => new List<Migration>());
 }
 
 _getConnectionString() {

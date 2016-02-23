@@ -1,9 +1,10 @@
-import "dart:io" show File, Platform, IOSink, Directory, FileSystemEntity;
+import "dart:io" show File, Platform, IOSink, Directory, FileSystemEntity, Process, ProcessResult;
 
 import "package:args/args.dart";
 import "package:path/path.dart";
 import "package:dart_rocks/config.dart";
 import "package:dart_rocks/db.dart";
+import "package:objectory/objectory_console.dart";
 
 
 const String Template = '_template.dart';
@@ -13,13 +14,17 @@ main(List<String> args) async {
   ArgResults options = _createParser().parse(args);
   Config.load(options['config']);
 
+  await initConnection();
+
   if (options.command.name == 'create') {
     create(options.command['name']);
   } else if (options.command.name == 'up') {
     await up();
   } else if (options.command.name == 'down') {
-    down(int.parse(options.command['count']));
+    await down(int.parse(options.command['count']));
   }
+
+  objectory.close();
 }
 
 /// Create new migration file from template
@@ -38,13 +43,48 @@ create(String name) {
 /// Run all migrations
 up() async {
   Map<String, String> migrations = _getMigrationsList();
-  print(migrations);
+  List<Migration> applied = await objectory[Migration].find();
+
+  applied.forEach((Migration element) {
+    if (migrations.containsKey(element.name)) {
+      migrations.remove(element.name);
+    }
+  });
+
+  for (var i = 0; i < migrations.keys.length; i++) {
+    String name = migrations.keys.elementAt(i);
+    String path = migrations[name];
+
+    bool result = _upMigration(path);
+
+    if (!result) {
+      break;
+    }
+
+    Migration migration = new Migration();
+    migration.path = path;
+    migration.name = name;
+    migration.time = new DateTime.now();
+    await migration.save();
+  }
 }
 
-
 /// Down migrations
-down([count=0]) {
-  print('down ' + count.toString());
+down([count=0]) async {
+  List<Migration> applied = await objectory[Migration].find(where.sortBy('time', descending: true).limit(count));
+
+
+  for (var i = 0; i < applied.length; i++) {
+    Migration migration = applied[i];
+
+    bool result = _downMigration(migration.path);
+
+    if (!result) {
+      break;
+    }
+
+    await migration.remove();
+  }
 }
 
 /// Create arguments parser
@@ -96,4 +136,42 @@ Map<String, String> _getMigrationsList() {
   });
 
   return migrations;
+}
+
+/// Up concrete migration
+///
+/// @return bool true, if success
+bool _upMigration(String path) {
+  print("== Up migration $path");
+  ProcessResult result = Process.runSync('dart', [path, 'up']);
+
+  print(result.stdout);
+  print(result.stderr);
+
+  if (result.exitCode == 0) {
+    print("== Success");
+  } else {
+    print("== Error");
+  }
+
+  return result.exitCode == 0;
+}
+
+/// Down concrete migration
+///
+/// @return bool true, if success
+bool _downMigration(String path) {
+  print("== Down migration $path");
+  ProcessResult result = Process.runSync('dart', [path, 'down']);
+
+  print(result.stdout);
+  print(result.stderr);
+
+  if (result.exitCode == 0) {
+    print("== Success");
+  } else {
+    print("== Error");
+  }
+
+  return result.exitCode == 0;
 }
